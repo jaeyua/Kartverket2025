@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<kartverket2025.Models.DomainModels.ApplicationUser> SignInManager
+@inject UserManager<kartverket2025.Models.DomainModels.ApplicationUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="gap: 0.5rem;">
+                <img src="~/images/mapuserpfp.svg" alt="Profile" width="32" height="32" class="rounded-circle" style="object-fit: cover;">
+                @UserManager.GetUserName(User)
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li>
+                    <a class="dropdown-item" href="/Account/ProfilePage">Profile</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="/Account/Settings">Settings</a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider" />
+                </li>
+                <li>
+                    <form id="logoutForm" method="post" asp-controller="Account" asp-action="LogOut" class="dropdown-item p-0 m-0 border-0 bg-transparent">
+                        <button type="submit" class="btn btn-link dropdown-item">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </li>
+    }
+
+    else{
+    <li class="nav-item">
+        <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+    </li>
+    }
+</ul>

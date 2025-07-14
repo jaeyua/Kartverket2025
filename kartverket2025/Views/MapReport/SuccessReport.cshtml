@@ -1,0 +1,18 @@
+﻿<head>
+    <link rel="stylesheet" href="~/css/report.css" />
+</head>
+
+<div class="report-container">
+    <div class="report-message-box">
+        <h2 class="report-title">Takk!</h2>
+        <p>Din kartmelding har blitt sendt inn.</p>
+    </div>
+    <div class="report-btn-group">
+        <a href="@Url.Action("AddReport", "MapReport")" class="report-btn">
+            Send inn en ny melding
+        </a>
+        <a href="@Url.Action("Index", "Home")" class="report-btn secondary">
+            Tilbake til forsiden
+        </a>
+    </div>
+</div>

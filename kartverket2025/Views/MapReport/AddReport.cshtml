@@ -1,0 +1,52 @@
+﻿@model kartverket2025.Models.ViewModels.MapReportViewModel
+
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+    <link rel="stylesheet" href="~/css/report.css" />
+</head>
+
+<div class="report-container">
+    <!-- Map + Karttype dropdown in the left column -->
+    <div class="report-map">
+        <div id="map" style="height: 400px; width: 100%;"></div>
+        <div class="form-group" style="margin-top: 18px;">
+            <label for="tileLayerSelect" class="report-label karttype-label">Karttype</label>
+            <select id="tileLayerSelect" class="report-input karttype-select">
+                <option value="1">Topofarge</option>
+                <option value="2">Topogråtone</option>
+                <option value="3">Turkart</option>
+                <option value="4">Sjøkart</option>
+                <option value="5">Carto Light</option>
+                <option value="6">Carto Dark</option>
+            </select>
+        </div>
+    </div>
+    <div class="report-info">
+        <span class="report-title">Add Report</span>
+        <form asp-action="PreviewReport" method="post">
+            <input type="hidden" asp-for="TileLayerId" id="tileLayerInput" />
+            <input type="hidden" id="geoJsonInput" asp-for="ReportAreaJson" />
+            <label for="title" class="report-label">Tittel</label>
+            <textarea id="title" asp-for="ReportTitle" class="report-textarea" placeholder="Skriv tittel..." required></textarea>
+            <label for="description" class="report-label">Beskrivelse</label>
+            <textarea id="description" asp-for="ReportDescription" class="report-textarea" placeholder="Beskrivelse" required></textarea>
+            <label class="report-label">Kommune</label>
+            <input type="text" asp-for="ReportKommunenavn" id="municipalityInput" class="report-input" readonly />
+            <label for="countryInput" class="report-label">Fylke</label>
+            <input type="text" id="countryInput" asp-for="ReportFylkenavn" class="report-input" readonly />
+            <input type="hidden" id="latitude" name="Latitude" />
+            <input type="hidden" id="longitude" name="Longitude" />
+            <button type="submit" class="report-btn">Se over innmelding</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@turf/turf@6.5.0/turf.min.js"></script>
+    <script src="~/js/tileLayerSelect.js"></script>
+    <script src="~/js/kartverketApi.js"></script>
+    <script src="~/js/reportMap.js"></script>
+}

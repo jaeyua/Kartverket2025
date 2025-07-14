@@ -1,0 +1,60 @@
+﻿@model kartverket2025.Models.ViewModels.MapReportViewModel
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="~/css/report.css" />
+
+<div class="report-container">
+    <!-- Map preview (just like previewreport) -->
+    <div class="report-map">
+        <div id="previewMap" style="height:400px; width:100%;"></div>
+    </div>
+    <!-- Info preview -->
+    <div class="report-info">
+        <span class="report-title">Vil du slette denne rapporten?</span>
+        <div class="report-info-table">
+            <b>Tittel:</b> @Model.ReportTitle <br />
+            <b>InnmeldingID:</b> @Model.Id <br />
+            <b>Beskrivelse:</b> @Model.ReportDescription <br />
+            <b>Innmelder:</b> @Model.FullName <br />
+            <b>Kommune:</b> @Model.ReportKommunenavn <br />
+            <b>Fylke:</b> @Model.ReportFylkenavn <br />
+            <b>Status:</b> @Model.Status <br />
+            <b>Karttype:</b> @(
+            Model.TileLayerId switch
+            {
+                1 => "Topofarge",
+                2 => "Topogråtone",
+                3 => "Turkart",
+                4 => "Sjøkart",
+                5 => "Carto Light",
+                6 => "Carto Dark",
+                _ => "Ukjent"
+            }
+            )<br />
+        </div>
+        <div>
+            <form asp-action="DeleteMapReport" method="post" style="display:inline;">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="report-btn danger">Delete</button>
+            </form>
+            <a asp-action="AllMapReportsOverview" class="report-btn secondary">Cancel</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="~/js/displayMapReport.js"></script>
+    <script>
+        // Show the preview map when page is ready
+        document.addEventListener("DOMContentLoaded", function() {
+            setPreviewMap({
+                mapDivId: "previewMap",
+                center: [58.1467, 7.9956], // or use your Model's center if available
+                zoom: 13,
+                tileLayerId: @Model.TileLayerId,
+                reportAreaJson: @Html.Raw(Json.Serialize(Model.ReportAreaJson ?? "null"))
+            });
+        });
+    </script>
+}

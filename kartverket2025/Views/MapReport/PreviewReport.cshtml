@@ -1,0 +1,67 @@
+﻿@model kartverket2025.Models.ViewModels.MapReportViewModel
+
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="~/css/report.css" />
+
+<div class="report-container">
+    <!-- Map preview -->
+    <div class="report-map">
+        <div id="previewMap" style="height:400px; width:100%;"></div>
+    </div>
+    <!-- Info preview -->
+    <div class="report-info">
+        <span class="report-title">Preview Report</span>
+        <div class="report-info-table">
+            <b>Tittel:</b> @Model.ReportTitle <br />
+            <b>Beskrivelse:</b> @Model.ReportDescription <br />
+            <b>Kommune:</b> @Model.ReportKommunenavn <br />
+            <b>Fylke:</b> @Model.ReportFylkenavn <br />
+            <b>Karttype:</b> @(
+            Model.TileLayerId switch
+            {
+                1 => "Topofarge",
+                2 => "Topogråtone",
+                3 => "Turkart",
+                4 => "Sjøkart",
+                5 => "Carto Light",
+                6 => "Carto Dark",
+                _ => "Ukjent"
+            }
+            )<br />
+        </div>
+        <div>
+            <form asp-action="AddReport" method="get" style="display:inline;">
+                <button type="submit" class="report-btn secondary">Gå tilbake</button>
+            </form>
+            <form asp-action="ConfirmReport" method="post" style="display:inline;">
+                <input type="hidden" asp-for="ReportTitle" />
+                <input type="hidden" asp-for="ReportDescription" />
+                <input type="hidden" asp-for="ReportKommunenavn" />
+                <input type="hidden" asp-for="ReportFylkenavn" />
+                <input type="hidden" asp-for="ReportAreaJson" />
+                <input type="hidden" asp-for="TileLayerId" />
+                <button type="submit" class="report-btn">Bekreft</button>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@turf/turf@6.5.0/turf.min.js"></script>
+    <script src="~/js/displayMapReport.js"></script>
+    <script src ="~/js/tileLayerSelect.js"></script>
+    <script>
+        //showing the preview map when page is ready
+        document.addEventListener("DOMContentLoaded", function() {
+            setPreviewMap({
+                mapDivId: "previewMap",
+                center: [58.1467, 7.9956], //initializes kristiansand areajson or latitude and longitutde 
+                zoom: 13,
+                tileLayerId: @Model.TileLayerId,
+                reportAreaJson: @Html.Raw(Json.Serialize(Model.ReportAreaJson ?? "null"))
+            });
+        });
+    </script>
+}
