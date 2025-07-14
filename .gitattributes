@@ -59,16 +59,13 @@
 # Improve C# language detection and reduce JavaScript influence
 ###############################################################################
 
-# Ensure all C# files are recognized correctly
+# Treat all C# files explicitly as C#
 *.cs linguist-language=C#
 
-# Reduce weight of generated JavaScript files
-*.min.js linguist-generated
-*.bundle.js linguist-generated
-*.js.map linguist-generated
-dist/** linguist-generated
-build/** linguist-generated
-node_modules/** linguist-vendored
+# Mark JavaScript files as generated (excluded from stats)
+*.js linguist-generated
 
-# Keep manually written JS files counted
-# (avoid marking *.js globally as generated)
+# Optional: exclude JS in specific folders (if needed)
+# /scripts/** linguist-generated
+# /frontend/** linguist-generated
+# /node_modules/** linguist-vendored
